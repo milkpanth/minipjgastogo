@@ -1,9 +1,36 @@
-import React from "react";
+import React, { Component, useState, useEffect } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBInput } from 'mdbreact';
-import './Login.css'
+import './Login.css';
+import config from "../firebase/config";
+import firebase from 'firebase';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 
 const LoginPage = () => {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  const login = e => {
+      e.preventDefault();
+      config.auth().signInWithEmailAndPassword(email, password).then((u) =>{
+          console.log(u)
+      }).catch((err) => {
+          console.log(err)
+      })
+  }
+
+  const signup = e => {
+      e.preventDefault()
+      config.auth().createUserWithEmailAndPassword(email, password).then((u) => {
+          console.log(u)
+      }).catch((err) => {
+          console.log(err)
+      })
+    }
+
+
   return (
     <MDBContainer className="LoginForm">
       <MDBRow>
@@ -80,6 +107,7 @@ const LoginPage = () => {
       </MDBRow>
     </MDBContainer>
   );
+  
 };
 
 export default LoginPage;
